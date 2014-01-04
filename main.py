@@ -104,7 +104,7 @@ def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', help='--port pass required port numper as arguiment default port is 8000',default=8000,type=int)
     parser.add_argument('--downloads', help='--downloads used to restrict number of downloads',default=-1,type=int)
-    parser.add_argument('--file', help='-- pass path to file here to make downlodable in you network', default=__file__)
+    parser.add_argument('--file', help='-- pass path to file here to make downlodable in you network', default='')
     parser.add_argument('--password', help='-- enter password to protect files from anothorized download', default='')
     args = parser.parse_args()
     args = vars(args)
