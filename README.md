@@ -41,4 +41,27 @@ python main.py --file largefile.avi --port 8888 --password  test_pass --download
 -- password  argument is used to authenticate download . in above command password is test_pass. 
 so user need to open http://192.168.1.44:8000/test_pass to download largefile.avi
 
+## Install
+WINDOWS
+setupfile available in dist directory
+
+Linux
+
+```bash
+sudo cp main.py /usr/bib/fserver
+sudo chmod 777 /usr/bib/fserver
+
+```
+
+then enter
+
+```bash
+fserver --help 
+```
+in your terminal
+
+## Issues
+1:Duplicating Environment PATH variable during reinstallation 
+
+2:Not able to terminate server by pressing CTRL+C
 
