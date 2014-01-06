@@ -60,8 +60,5 @@ fserver --help
 ```
 in your terminal
 
-## Issues
-1:Duplicating Environment PATH variable during reinstallation 
 
-2:Not able to terminate server by pressing CTRL+C
 

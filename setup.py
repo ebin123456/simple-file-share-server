@@ -9,6 +9,8 @@ setup(
     zipfile = None,
 )
 
+os.rename('dist/main.exe','dist/fserver.exe')
+
 
 # from distutils.core import setup
 # import py2exe

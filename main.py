@@ -7,6 +7,11 @@ import ntpath
 import socket
 import argparse
 from urlparse import urlparse
+import threading
+import time
+import signal
+import urllib
+
 
 
 
@@ -31,13 +36,33 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_header("Content-Length", str(fs.st_size))
             self.end_headers()
             shutil.copyfileobj(f, self.wfile)
-        
 
+
+def signal_handler(signal, frame):
+    print 7777   
+            
+    
+def gg(httpd):
+    
+    while True:
+        #time.sleep(100)
+        if(args['downloads'] != -1 and downloads >=  args['downloads']):
+            break
+        if(interrupted):
+            break    
+        httpd.handle_request()
+                       
+        
+def create_dummy_request(url):
+    urllib.urlopen("http://"+url)
+        
 def start_file_server(HandlerClass=SimpleHTTPRequestHandler,
          ServerClass=BaseHTTPServer.HTTPServer,
          protocol="HTTP/1.0"):
     
     global httpd
+    global interrupted
+    interrupted = False
     port = args['port']
     server_address = ('', port)
 
@@ -46,11 +71,23 @@ def start_file_server(HandlerClass=SimpleHTTPRequestHandler,
     sa = httpd.socket.getsockname()
     ip = get_lan_ip()
     print "Serving HTTP on", ip, "port", sa[1], "...", args['file']
-    print "Please open     ",str(ip)+":"+str(port)+"/"+args['password'],"            in your browser to download ",args['file'] ,'file'
+    link = str(ip)+":"+str(port)+"/"+args['password']
+    print "Please open     ",link,"            in your browser to download ",args['file'] ,'file'
+    background_thread = threading.Thread(target=gg,args=(httpd,))
+    background_thread.start()
+    #signal.signal(signal.SIGINT, signal_handler)
     while True:
         if(args['downloads'] != -1 and downloads >=  args['downloads']):
             break
-        httpd.handle_request()
+        try:
+            time.sleep(1)
+        except:
+            print 55 
+            interrupted = True
+            create_dummy_request(link)
+            break   
+        
+           
         
 
     
@@ -115,11 +152,14 @@ def main():
     if not check_file(args['file']):
         print args['file'],'not found'
         sys.exit()
+
     start_file_server()
 if __name__ == '__main__':
     global args
     global downloads
     global httpd
+    global interrupted
+
     downloads = 0
     main()
     
